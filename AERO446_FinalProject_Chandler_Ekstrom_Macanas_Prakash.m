@@ -28,3 +28,8 @@ margin = 5; % link budget margin, [dB]
 
 
 
+
+
+
+
+%% eric is bunk
