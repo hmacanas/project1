@@ -44,12 +44,64 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 %% Low Cost
 
-% Power
+% Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% Comms
+% needed parameters
+
+w = 2*pi/T;                                         % angular velocity rads/s
+Se = 1366;                                          % W/m^2
+
+% NEED TO CHANGE
+Area_body = 1;                                      % area of 1 body panel
+Area_tarcking = 1;                                  % area of 1 tracking panel
+
+% efficiency
+
+% NEED TO CHANGE THESE 
+e_cell = .29;                                       % solar cell efficiency
+e_deg = .025;                                       % cell degradation/year
+e_temp = .005;                                      % temp efficiency change
+
+% THESE ARE FINE 
+E_temp = e_cell*(1-e_temp*(75-25));                 % temperature effciency
+E_time = (1-e_deg)^7;                               % time efficiency
+E_packing_desnity = 1;                              % packing desnity for now
+E_total = E_temp*E_time*E_packing_desnity;          % combined efficiency
+
+% power calcs
+
+syms t
+theta = w*t;                                        % angle of incidence 
+P_fore = Se*Area_body*E_total*sin(theta);           % power fore panel
+P_aft =  Se*Area_body*E_total*-sin(theta);          % power aft panel
+P_side1 = 0;                                        % power side panel 1
+P_side2 = 0;                                        % power side panel 1
+
+% energy calcs
+energy_fore = double(int(P_fore,t,[tEclipse/2, T/2]));      % energy produced by fore
+energy_aft = double(int(P_aft,t,[T/2, T - tEclipse/2]));  % energy produced by aft
+
+
+% Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 %% High Cost
 
-% Power
+% Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% Comms
+% power calcs
+syms t
+theta = pi/2;                                   % incidence angle always 
+P_norm = Se*Area_tarcking*E_total*sin(theta);   % power produced by one panel
+
+% energy calcs
+energy_norm = double(int(P_norm,t,[0, T-tEclipse]));    % energy produced by one panel
+
+% Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+
+
+
+
+
+
