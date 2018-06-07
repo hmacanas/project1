@@ -41,3 +41,7 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 
 %% eric is bunk
+
+
+
+
