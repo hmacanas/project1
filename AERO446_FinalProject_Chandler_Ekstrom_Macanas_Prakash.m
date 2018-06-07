@@ -41,7 +41,6 @@ tSight = T - tEclipse; % time spent in [Earth line-of-sight / Sunlight], [s]
 numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 
-
 %% Low Cost
 
 % Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
