@@ -63,7 +63,7 @@ e_deg = .025;                                       % cell degradation/year
 e_temp = .005;                                      % temp efficiency change
 
 % THESE ARE FINE 
-E_temp = e_cell*(1-e_temp*(75-25));                 % temperature effciency
+E_temp = e_cell*(1-e_temp*(40-28));                 % temperature effciency
 E_time = (1-e_deg)^7;                               % time efficiency
 E_packing_desnity = 1;                              % packing desnity for now
 E_total = E_temp*E_time*E_packing_desnity;          % combined efficiency
@@ -79,7 +79,7 @@ P_side2 = 0;                                        % power side panel 1
 
 % energy calcs
 energy_fore = double(int(P_fore,t,[tEclipse/2, T/2]));      % energy produced by fore
-energy_aft = double(int(P_aft,t,[T/2, T - tEclipse/2]));  % energy produced by aft
+energy_aft = double(int(P_aft,t,[T/2, T - tEclipse/2]));    % energy produced by aft
 
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -90,8 +90,8 @@ energy_aft = double(int(P_aft,t,[T/2, T - tEclipse/2]));  % energy produced by a
 
 % power calcs
 syms t
-theta = pi/2;                                   % incidence angle always 
-P_norm = Se*Area_tarcking*E_total*sin(theta);   % power produced by one panel
+theta = pi/2;                                           % incidence angle always 
+P_norm = Se*Area_tarcking*E_total*sin(theta);           % power produced by one panel
 
 % energy calcs
 energy_norm = double(int(P_norm,t,[0, T-tEclipse]));    % energy produced by one panel
