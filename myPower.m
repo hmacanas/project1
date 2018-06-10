@@ -114,7 +114,7 @@ total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;
 %% Power Plots 
 
 % time is one orbit
-time = linspace(0,T);
+time = linspace(0,T,1000);
 
 % how long we will be transmitting data (s)
 %transmit_time = 1/10*T;
