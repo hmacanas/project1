@@ -59,6 +59,8 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+R = myComms('Low'); % [bit/s]
+
 %% High Cost
 
 % Operations>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -78,7 +80,7 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-
+R = myComms('High'); % [bit/s]
 
 
 
