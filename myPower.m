@@ -1,10 +1,10 @@
 function [total_energy_science,total_energy_tracking,energy_total_45] = myPower(transmit_time)
 % Input:
-    % time of data transmission
+    % time of data transmission (s)
     
 % Output:
     % total energy produced during science, low cost, and high cost configuration
-    % power plots of science, low cost, and high cost configuration
+    % power plots of science, low cost, and high cost configuration (whr)
     
 % Note:
     % if the time of data transmission is zero energy and plots for a full
@@ -156,22 +156,22 @@ figure
 hold on
 plot(time,P_fore_science,'linewidth',2)
 plot(time,P_aft_science,'linewidth',2)
-title("Power Generation During Science vs Time")
-xlabel("Time (s)")
-ylabel("Power (W)")
+title('Power Generation During Science vs Time')
+xlabel('Time (s)')
+ylabel('Power (W)')
 
 
 figure
 plot(time,P_45_all,'linewidth',2)
-title("Power Generation Low Cost Configuration")
-xlabel("Time (s)")
-ylabel("Power (W)")
+title('Power Generation Low Cost Configuration"')
+xlabel('Time (s)')
+ylabel('Power (W)')
 
 figure
 plot(time,P_norm,'linewidth',2)
-title("Power Generation High Cost Configuration")
-xlabel("Time (s)")
-ylabel("Power (W)")
+title('Power Generation High Cost Configuration')
+xlabel('Time (s)')
+ylabel('Power (W)')
 
 end
 
