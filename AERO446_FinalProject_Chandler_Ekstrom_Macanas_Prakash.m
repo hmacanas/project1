@@ -45,44 +45,6 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
 % Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% needed parameters
-
-w = 2*pi/T;                                         % angular velocity rads/s
-Se = 1367;                                          % W/m^2
-Temp = 40;                                          % nominal solar panel temp
-Temp_ref = 28;                                      % solar panel reference temp
-
-% NEED TO CHANGE
-Area = .3*.2;                                       % area of each panel
-
-% efficiency
-
-% NEED TO CHANGE THESE 
-e_cell = .29;                                       % solar cell efficiency
-e_deg = .025;                                       % cell degradation/year
-e_temp = .005;                                      % temp efficiency change
-
-% THESE ARE FINE 
-E_temp = e_cell*(1-e_temp*(Temp-Temp_ref));         % temperature effciency
-E_time = (1-e_deg)^7;                               % time efficiency
-E_packing_desnity = 1;                              % packing desnity for now
-E_total = E_temp*E_time*E_packing_desnity;          % combined efficiency
-
-% power calcs when collecting science (solar panels at a 45)
-
-syms t
-theta = w*t;                                        % angle of incidence 
-Area_wetted = 2*cos(pi/4)*Area;
-P_fore = Se*Area_wetted*E_total*sin(theta);         % power fore panel
-P_aft =  Se*Area_wetted*E_total*-sin(theta);        % power aft panel
-P_side1 = 0;                                        % power side panel 1
-P_side2 = 0;                                        % power side panel 1
-P_total_science = P_fore+P_aft;                     % watts
-
-% energy calcs
-energy_fore = double(int(P_fore,t,[tEclipse/2, T/2]));      % energy produced by fore
-energy_aft = double(int(P_aft,t,[T/2, T - tEclipse/2]));    % energy produced by aft
-total_energy_science = (energy_fore + energy_aft)/3600;     %(whrs)
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -90,13 +52,6 @@ total_energy_science = (energy_fore + energy_aft)/3600;     %(whrs)
 
 % Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% power calcs
-syms t
-theta = pi/2;                                                           % incidence angle always 
-P_norm = 3*Se*Area*E_total*sin(theta);                                  % watts power produced by all panels
-
-% energy calcs
-total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;   % whrs energy produced by all panels
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
