@@ -1,85 +1,177 @@
-function [total_energy_science,total_energy_tracking,energy_total_body,energy_total_45] = myPower()
-% Constants
+function [total_energy_science,total_energy_tracking,energy_total_45] = myPower(transmit_time)
+% Input:
+    % time of data transmission
+    
+% Output:
+    % total energy produced during science, low cost, and high cost configuration
+    % power plots of science, low cost, and high cost configuration
+    
+% Note:
+    % if the time of data transmission is zero energy and plots for a full
+    % orbit are produced
+    
+%% Constants
+
+% orbital parameters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 r_moon = 1737; % radius of moon, [km]
 mu_moon = 4904.87; % grativational parameter of moon, [km^3 / s^2]
-
-
-% Orbital Parameters for the Moon
 alt = 200; % altitude of orbit, [km]
 T = 2*pi*sqrt((r_moon + alt)^3/mu_moon); % Period of orbit, [s]
 ang = 2*(90 - acosd(r_moon/(r_moon + alt))); % angle for arc in eclipse, [deg]
 tEclipse = T*ang/360; % time spent in eclipse, [s]
 
-%% Low Cost
-
-
 % needed parameters>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-w = 2*pi/T;                                         % angular velocity rads/s
-Se = 1367;                                          % W/m^2
-Temp = 40;                                          % nominal solar panel temp
-Temp_ref = 28;                                      % solar panel reference temp
-Area = .3*.2;                                       % area of each panel
+% angular velocity rads/s
+w = 2*pi/T;                                                                 
+
+% W/m^2
+Se = 1367; 
+
+% solar panel temp (c)
+Temp = 40;   
+
+% panel reference temp (c)
+Temp_ref = 28;  
+
+% area of one solar panel
+Area = .3*.2;                                                             
 
 % efficiency>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-e_cell = .29;                                       % solar cell efficiency
-e_deg = .025;                                       % cell degradation/year
-e_temp = .005;                                      % temp efficiency change
- 
-E_temp = e_cell*(1-e_temp*(Temp-Temp_ref));         % temperature effciency
-E_time = (1-e_deg)^7;                               % time efficiency
-E_packing_desnity = 1;                              % packing desnity for now
-E_total = E_temp*E_time*E_packing_desnity;          % combined efficiency
 
-%% Science orientation
-% power calcs when collecting science (solar panels at a 45)>>>>>>>>>>>>>>>
+% solar cell efficiency
+e_cell = .29;
+
+% cell degradation/year
+e_deg = .025;
+
+% temp efficiency change
+e_temp = .005;                                                             
+
+% temperature effciency
+E_temp = e_cell*(1-e_temp*(Temp-Temp_ref)); 
+
+% time efficiency
+E_time = (1-e_deg)^7;
+
+% packing desnity for now
+E_packing_desnity = .8;    
+
+% combined efficiency
+E_total = E_temp*E_time*E_packing_desnity; 
+
+%% Low Cost
+
+% Science orientation>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+% power calcs when collecting science (solar panels at a 45
 syms t
-theta = w*t;                                        % angle of incidence 
+theta = w*t;                                                               
 Area_wetted = 2*cos(pi/4)*Area;
-P_fore_science = Se*Area_wetted*E_total*sin(theta);         % power fore panel
-P_aft_science =  Se*Area_wetted*E_total*-sin(theta);        % power aft panel
-P_side1 = 0;                                        % power side panel 1
-P_side2 = 0;                                        % power side panel 1
-P_total_science = P_fore_science+P_aft_science;                     % watts
+P_fore_science = Se*Area_wetted*E_total*sin(theta);                         
+P_aft_science =  Se*Area_wetted*E_total*-sin(theta);                        
+P_total_science = P_fore_science+P_aft_science;                             
 
-% energy calcs when collecting science>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-energy_fore_science = double(int(P_fore_science,t,[tEclipse/2, T/2]));      % energy produced by fore
-energy_aft_science = double(int(P_aft_science,t,[T/2, T - tEclipse/2]));    % energy produced by aft
-total_energy_science = (energy_fore_science + energy_aft_science)/3600;     %(whrs)
-%% 3-body
-% power calcs when colecting power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-syms t
-P_fore_body = Se*Area_wetted*E_total*sin(theta);                 % power fore panel
-P_aft_body =  Se*Area_wetted*E_total*-sin(theta);                % power aft panel
-P_zenith_body = Se*Area*E_total*-cos(theta);                     % zenith panel power
-P_total_body = P_fore_body+P_aft_body+P_zenith_body;
+% energy calcs when collecting science
+energy_fore_science = double(int(P_fore_science,t,[tEclipse/2, T/2]));      
+energy_aft_science = double(int(P_aft_science,t,[T/2, T - tEclipse/2]));    
+total_energy_science = (energy_fore_science + energy_aft_science)/3600;     
 
-% energy calcs >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-energy_fore_body = double(int(P_fore_body,t,[tEclipse/2, T/2]));
-energy_aft_body = double(int(P_aft_body,t,[T/2, T - tEclipse/2]));
-energy_zenith_body = double(int(P_zenith_body,t,[T/4, 3*T/4]));
-energy_total_body = (energy_fore_body + energy_aft_body + energy_zenith_body)/3600;
+% 45 always>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-%% 45 angle always
 % power
 P_45_all = Se*Area_wetted*E_total*sin(pi/2);
 
 % energy
-energy_total_45 = (double(int(P_45_all,t,[0, T-tEclipse])))/3600;
-% Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+energy_total_45 = (double(int(P_45_all,t,[tEclipse/2, T/2-transmit_time])))/3600+...
+(double(int(P_45_all,t,[T/2+transmit_time, T - tEclipse/2])))/3600;
+
+% % 3-body Penals>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% 
+% % power calcs when colecting power
+% syms t
+% P_fore_body = Se*Area*E_total*sin(theta);                                   
+% P_aft_body =  Se*Area*E_total*-sin(theta);                                  
+% P_zenith_body = Se*Area*E_total*-cos(theta);                                
+% P_total_body = P_fore_body+P_aft_body+P_zenith_body;
+
+% % energy calcs 
+% energy_fore_body = double(int(P_fore_body,t,[tEclipse/2, T/2]));
+% energy_aft_body = double(int(P_aft_body,t,[T/2, T - tEclipse/2]));
+% energy_zenith_body = double(int(P_zenith_body,t,[T/4, 3*T/4]));
+% energy_total_body = (energy_fore_body + energy_aft_body + energy_zenith_body)/3600;
 
 %% High Cost
 
-% Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 % power calcs
 syms t
-theta = pi/2;                                                           % incidence angle always 
-P_norm = 3*Se*Area*E_total*sin(theta);                                  % watts power produced by all panels
+theta = pi/2;                                                                
+P_norm = 3*Se*Area*E_total*sin(theta);                                      
 
 % energy calcs
-total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;   % whrs energy produced by all panels
+total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;   
 
-% Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% Power Plots 
+
+% time is one orbit
+time = linspace(0,T);
+
+% how long we will be transmitting data (s)
+%transmit_time = 1/10*T;
+
+for i = 1:length(time)
+    theta = w*time(i);
+    
+    % if its in eclipse all power is zero
+    if time(i) <= tEclipse/2 ||time(i) >= T-tEclipse/2
+        P_fore_science(i) = 0;                                      
+        P_aft_science(i) = 0;                                        
+        P_norm(i) = 0;
+        P_45_all(i) = 0;
+    end
+    
+    % if its after eclipse and before transmitting and half the period 
+    if time(i) > tEclipse/2 && time(i) < T/2 - transmit_time/2
+        P_fore_science(i) = Se*Area_wetted*E_total*sin(theta);     
+        P_aft_science(i) = 0;
+        P_45_all(i) = Se*Area_wetted*E_total*sin(pi/2);
+    end
+    
+    % if its after half the period and transmit time and not in eclipse
+    if time(i) >= T/2 + transmit_time/2 && time(i) < T - tEclipse/2
+        P_fore_science(i) = 0;                                      
+        P_aft_science(i) = Se*Area_wetted*E_total*-sin(theta);      
+        P_45_all(i) = Se*Area_wetted*E_total*sin(pi/2);
+    end
+
+ 
+    % if tis in the sun at all tracking panels can collect
+    if time(i) >=tEclipse/2 && time(i)< T-tEclipse/2
+        P_norm(i) = 3*Se*Area_wetted*E_total*sin(pi/2);  
+    end
+ 
+end
+
+figure
+hold on
+plot(time,P_fore_science,'linewidth',2)
+plot(time,P_aft_science,'linewidth',2)
+title("Power Generation During Science vs Time")
+xlabel("Time (s)")
+ylabel("Power (W)")
+
+
+figure
+plot(time,P_45_all,'linewidth',2)
+title("Power Generation Low Cost Configuration")
+xlabel("Time (s)")
+ylabel("Power (W)")
+
+figure
+plot(time,P_norm,'linewidth',2)
+title("Power Generation High Cost Configuration")
+xlabel("Time (s)")
+ylabel("Power (W)")
+
 end
 
