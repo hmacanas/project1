@@ -60,6 +60,7 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 R = myComms('Low'); % [bit/s]
+time_low = transmit_time(R,data*10^6,numOrbits);
 
 %% High Cost
 
@@ -81,7 +82,7 @@ R = myComms('Low'); % [bit/s]
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 R = myComms('High'); % [bit/s]
-
+time_high = transmit_time(R,data*10^6,numOrbits);
 
 
 
