@@ -30,7 +30,7 @@ d_low = 20; % diameter of parabolic antenna, [cm]
 % High Cost
 d_high = 50; % diameter of deployable antennna, [cm]
 
-% Orbital Parameters for the Moon
+%% Orbital Parameters for the Moon
 alt = 200; % altitude of orbit, [km]
 T = 2*pi*sqrt((r_moon + alt)^3/mu_moon); % Period of orbit, [s]
 data = dataRate_sensor*T/1000; % data per day required to send [Mb]
@@ -40,8 +40,19 @@ tEclipse = T*ang/360; % time spent in eclipse, [s]
 tSight = T - tEclipse; % time spent in [Earth line-of-sight / Sunlight], [s]
 numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 
-
 %% Low Cost
+
+% Operations>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% 1.) Science Data Collection
+%       * 1 orbit pointed nadir
+%       * Payload on
+%       * No comms
+%       * Solar power dependent on orientation with body mounted panels
+% 2.) Power and Comms
+%       * 10 orbits
+%       * 15 minutes of comms with no solar power per orbit (8 orbits)
+%       * Rest of the time pointed to allow 2 panels to receive sun
+
 
 % Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -49,6 +60,18 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 %% High Cost
+
+% Operations>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% 1.) Science Data Collection
+%       * 1 orbit pointed nadir
+%       * Payload on
+%       * No comms
+%       * Solar power constant while in sun
+% 2.) Power and Comms
+%       * 10 orbits
+%       * 15 minutes of comms per orbit (8 orbits)
+%       * Solar power constant while in sun
+
 
 % Power>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
