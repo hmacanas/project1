@@ -36,7 +36,7 @@ thetaDepl = 65.3 * lambda / dDepl;
 
 % losses due to spacecraft pointing error [dB]
 LpFixed = -12 * (err_point/thetaFixed)^2;
-LpDepl = -12 * (err_point/thetaDepl)^2;;
+LpDepl = -12 * (err_point/thetaDepl)^2;
 
 
 % Link Equation ------------------------------------------------------
