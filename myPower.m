@@ -40,28 +40,28 @@ E_total = E_temp*E_time*E_packing_desnity;          % combined efficiency
 syms t
 theta = w*t;                                        % angle of incidence 
 Area_wetted = 2*cos(pi/4)*Area;
-P_fore = Se*Area_wetted*E_total*sin(theta);         % power fore panel
-P_aft =  Se*Area_wetted*E_total*-sin(theta);        % power aft panel
+P_fore_science = Se*Area_wetted*E_total*sin(theta);         % power fore panel
+P_aft_science =  Se*Area_wetted*E_total*-sin(theta);        % power aft panel
 P_side1 = 0;                                        % power side panel 1
 P_side2 = 0;                                        % power side panel 1
-P_total_science = P_fore+P_aft;                     % watts
+P_total_science = P_fore_science+P_aft_science;                     % watts
 
 % energy calcs when collecting science
-energy_fore_science = double(int(P_fore,t,[tEclipse/2, T/2]));      % energy produced by fore
-energy_aft_science = double(int(P_aft,t,[T/2, T - tEclipse/2]));    % energy produced by aft
+energy_fore_science = double(int(P_fore_science,t,[tEclipse/2, T/2]));      % energy produced by fore
+energy_aft_science = double(int(P_aft_science,t,[T/2, T - tEclipse/2]));    % energy produced by aft
 total_energy_science = (energy_fore_science + energy_aft_science)/3600;     %(whrs)
 
 % power calcs when colecting power
 syms t
-P_fore = Se*Area_wetted*E_total*sin(theta);                 % power fore panel
-P_aft =  Se*Area_wetted*E_total*-sin(theta);                % power aft panel
-P_zenith = Se*Area*E_total*-cos(theta);                     % zenith panel power
-P_total_body = P_fore+P_aft+P_zenith;
+P_fore_body = Se*Area_wetted*E_total*sin(theta);                 % power fore panel
+P_aft_body =  Se*Area_wetted*E_total*-sin(theta);                % power aft panel
+P_zenith_body = Se*Area*E_total*-cos(theta);                     % zenith panel power
+P_total_body = P_fore_body+P_aft_body+P_zenith_body;
 
 % energy calcs 
 energy_fore_body = double(int(P_fore_body,t,[tEclipse/2, T/2]));
 energy_aft_body = double(int(P_aft_body,t,[T/2, T - tEclipse/2]));
-energy_zenith_body = double(int(P_zenith_body,t,[P/4, 3*P/4]));
+energy_zenith_body = double(int(P_zenith_body,t,[tEclipse/4, 3*tEclipse/4]));
 energy_total_body = (energy_fore_body + energy_aft_body + energy_zenith_body)/3600;
 
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
