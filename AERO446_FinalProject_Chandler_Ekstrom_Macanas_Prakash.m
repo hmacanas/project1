@@ -86,6 +86,9 @@ time_high = transmit_time(data_rate,data,numOrbits-1);
 
 [total_low,total_high] = myPower(time_low);
 
-
+% [ E, energy_transmit_low, Energy_eclipse ] = ...
+%     energyUsed(90, T, tEclipse, T);
+% 
+% [mass_low,mass_high] = EricisBunk(energy_needed_high,energy_needed_low)
 
 
