@@ -84,7 +84,7 @@ time_low = transmit_time(data_rate,data,numOrbits-1);
 R = myComms('High'); % [bit/s]
 time_high = transmit_time(data_rate,data,numOrbits-1);
 
-[total_low,total_high] = myPower(90)
+[total_low,total_high] = myPower(500)
 
 [mass_low,mass_high] = EricisBunk(tEclipse,T)
 

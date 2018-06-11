@@ -135,9 +135,10 @@ for i = 1:length(time)
     P_science(i) = 56.2;
     P_cpu(i) = 1.6;
     P_adcs(i) = 2;
-    P_reciever(i) = 12.6;
     P_sensor(i) = 38;
-    
+    P_reciever_high(i) = 12.6;
+    P_idle_low(i) = .5;
+    P_idle_high(i) = .5;
     % if its in eclipse all power is zero
     if time(i) <= tEclipse/2 ||time(i) >= T-tEclipse/2
         P_fore_science(i) = 0;                                      
@@ -162,9 +163,13 @@ for i = 1:length(time)
         P_transmit(i) = 40.6;
         P_idle(i) = NaN;
         P_transmitter(i) = 22.4;
+        P_reciever_low(i) = 12.6;
+        
     else
         P_transmit(i) = 0;
         P_transmitter(i) = NaN;
+        P_reciever_low(i) = NaN;
+        
     end
     
     % if its after half the period and transmit time and not in eclipse
@@ -216,9 +221,11 @@ P_consumed = [P_science,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_us
 P_cpu = [P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu];
 P_adcs = [P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs];
 P_transmitter = [null,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,];
-P_reciever =[P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever];
+P_reciever_high =[null,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high,P_reciever_high];
+P_reciever_low = [null,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,P_reciever_low,];
 P_sensor =[P_sensor,null,null,null,null,null,null,null,null,null,null];
-
+P_idle_high = [P_idle_high,null,null,null,null,null,null,null,null,null,null];
+P_idle_low = [null,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low,P_idle_low];
 time = time./3600;
 t = linspace(0,T,100);
 figure
@@ -228,12 +235,13 @@ plot(time,P_high,'linewidth',2)
 plot(time,-P_cpu,'linewidth',2)
 plot(time,-P_adcs,'linewidth',2)
 plot(time,-P_transmitter,'linewidth',2)
-plot(time,-P_reciever,'linewidth',2)
+plot(time,-P_reciever_high,'linewidth',2)
 plot(time,-P_sensor,'linewidth',2)
+plot(time,-P_idle_high,'linewidth',2)
 title('Power Generation High Cost Configuration')
 xlabel('Time (hrs)')
 ylabel('Power (W)')
-legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','southeast','FontSize',18)
+legend({'Panels','cpu','adcs','transmitter','reciever','sensor','comms-idle'},'Location','southeast','FontSize',18)
 
 figure
 set(gca,'FontSize',32)
@@ -242,12 +250,13 @@ plot(time,P_low,'linewidth',2)
 plot(time,-P_cpu,'linewidth',2)
 plot(time,-P_adcs,'linewidth',2)
 plot(time,-P_transmitter,'linewidth',2)
-plot(time,-P_reciever,'linewidth',2)
+plot(time,-P_reciever_low,'linewidth',2)
 plot(time,-P_sensor,'linewidth',2)
+plot(time,-P_idle_low,'linewidth',2)
 title('Power Generation Low Cost Configuration')
 xlabel('Time (hrs)')
 ylabel('Power (W)')
-legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','southeast','FontSize',18)
+legend({'Panels','cpu','adcs','transmitter','reciever','sensor','comms_idle'},'Location','southeast','FontSize',18)
 
 
 % figure
