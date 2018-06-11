@@ -160,11 +160,11 @@ for i = 1:length(time)
     % if its transmitting 
     if time(i) >= T/2-transmit_time && time(i)<= T/2+transmit_time
         P_transmit(i) = 40.6;
-        P_idle(i) = 0;
+        P_idle(i) = NaN;
         P_transmitter(i) = 22.4;
     else
         P_transmit(i) = 0;
-        P_transmitter(i) = 0;
+        P_transmitter(i) = NaN;
     end
     
     % if its after half the period and transmit time and not in eclipse
@@ -216,23 +216,39 @@ P_cpu = [P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu];
 P_adcs = [P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs];
 P_transmitter = [P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,];
 P_reciever =[P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever];
-P_sensor =[P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,];
+t = linspace(0,T,100);
+null = zeros(1,length(t))*nan;
+P_sensor =[P_sensor,null,null,null,null,null,null,null,null,null,null];
+
 
 t = linspace(0,T,100);
 figure
+set(gca,'FontSize',18)
+hold on
 plot(time,P_high,'linewidth',2)
+plot(time,-P_cpu,'linewidth',2)
+plot(time,-P_adcs,'linewidth',2)
+plot(time,-P_transmitter,'linewidth',2)
+plot(time,-P_reciever,'linewidth',2)
+plot(time,-P_sensor,'linewidth',2)
 title('Power Generation High Cost Configuration')
 xlabel('Time (s)')
 ylabel('Power (W)')
+legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','northeast','FontSize',16)
 
 figure
+set(gca,'FontSize',18)
+hold on
 plot(time,P_low,'linewidth',2)
-
-
+plot(time,-P_cpu,'linewidth',2)
+plot(time,-P_adcs,'linewidth',2)
+plot(time,-P_transmitter,'linewidth',2)
+plot(time,-P_reciever,'linewidth',2)
+plot(time,-P_sensor,'linewidth',2)
 title('Power Generation Low Cost Configuration')
 xlabel('Time (s)')
 ylabel('Power (W)')
-
+legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','northeast','FontSize',16)
 
 
 % figure
@@ -253,17 +269,17 @@ ylabel('Power (W)')
 % xlabel('Time (s)')
 % ylabel('Power (W)')
 % 
-% figure
-% plot(time,P_low-P_consumed,'linewidth',2)
-% title('Power Generated Minus Power Consumed by Spacecraft: Low Cost Configuration')
-% xlabel('Time (s)')
-% ylabel('Power (W)')
-% 
-% figure
-% plot(time,P_high-P_consumed,'linewidth',2)
-% title('Power Generated Minus Power Consumed by Spacecraft: High Cost Configuration')
-% xlabel('Time (s)')
-% ylabel('Power (W)')
+figure
+plot(time,P_low-P_consumed,'linewidth',2)
+title('Power Generated Minus Power Consumed by Spacecraft: Low Cost Configuration')
+xlabel('Time (s)')
+ylabel('Power (W)')
+
+figure
+plot(time,P_high-P_consumed,'linewidth',2)
+title('Power Generated Minus Power Consumed by Spacecraft: High Cost Configuration')
+xlabel('Time (s)')
+ylabel('Power (W)')
 
 
 end
