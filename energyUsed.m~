@@ -2,11 +2,7 @@ function [ E ] = energyUsed(t_transmit, t_science, period)
 % Function to calculate energy used by spacecraft operations over some
 % period
 %
-% Example usage
-% energyUsed(15*60, T, 45*60*10, T*11)
-% where T is lunar orbit period
-%       45 is eclipse time per lunar orbit in minutes
-%
+
 % Inputs:   t_transmit: time the sapcecraft is transmitting [s]
 %           t_science: time spacecraft is collecting science [s]
 %           period: total time of interest [s]
