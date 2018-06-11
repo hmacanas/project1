@@ -219,10 +219,10 @@ P_transmitter = [null,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_
 P_reciever =[P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever];
 P_sensor =[P_sensor,null,null,null,null,null,null,null,null,null,null];
 
-
+time = time./3600;
 t = linspace(0,T,100);
 figure
-set(gca,'FontSize',18)
+set(gca,'FontSize',32)
 hold on
 plot(time,P_high,'linewidth',2)
 plot(time,-P_cpu,'linewidth',2)
@@ -231,12 +231,12 @@ plot(time,-P_transmitter,'linewidth',2)
 plot(time,-P_reciever,'linewidth',2)
 plot(time,-P_sensor,'linewidth',2)
 title('Power Generation High Cost Configuration')
-xlabel('Time (s)')
+xlabel('Time (hrs)')
 ylabel('Power (W)')
-legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','northeast','FontSize',16)
+legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','southeast','FontSize',18)
 
 figure
-set(gca,'FontSize',18)
+set(gca,'FontSize',32)
 hold on
 plot(time,P_low,'linewidth',2)
 plot(time,-P_cpu,'linewidth',2)
@@ -245,9 +245,9 @@ plot(time,-P_transmitter,'linewidth',2)
 plot(time,-P_reciever,'linewidth',2)
 plot(time,-P_sensor,'linewidth',2)
 title('Power Generation Low Cost Configuration')
-xlabel('Time (s)')
+xlabel('Time (hrs)')
 ylabel('Power (W)')
-legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','northeast','FontSize',16)
+legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','southeast','FontSize',18)
 
 
 % figure

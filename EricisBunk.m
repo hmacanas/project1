@@ -17,5 +17,6 @@ batt_cap_needed_low = energy_needed_low/charge_eff/DoD;     % whr
 mass_high = batt_cap_needed_high/rho_batt;                  % kg
 mass_low = batt_cap_needed_low/rho_batt;                    % kg
 
+
 end
 
