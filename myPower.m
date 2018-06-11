@@ -83,8 +83,8 @@ total_energy_science = (energy_fore_science + energy_aft_science)/3600;
 P_45_all = Se*Area_wetted*E_total*sin(pi/2);
 
 % energy
-energy_total_45 = (double(int(P_45_all,t,[tEclipse/2, T/2-transmit_time])))/3600+...
-(double(int(P_45_all,t,[T/2+transmit_time, T - tEclipse/2])))/3600;
+energy_total_45 = (double(int(P_45_all,t,[tEclipse/2, T/2-transmit_time/2])))/3600+...
+(double(int(P_45_all,t,[T/2+transmit_time/2, T - tEclipse/2])))/3600;
 
 % % 3-body Penals>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 % 
@@ -129,9 +129,15 @@ P_idle = 18.2;
 % P_adcs = 
 % P_transmitter = 
 % P_reciever = 
+% P_sensor = 
 for i = 1:length(time)
     theta = w*time(i);
     P_science(i) = 56.2;
+    P_cpu(i) = 1.6;
+    P_adcs(i) = 2;
+    P_reciever(i) = 12.6;
+    P_sensor(i) = 38;
+    
     % if its in eclipse all power is zero
     if time(i) <= tEclipse/2 ||time(i) >= T-tEclipse/2
         P_fore_science(i) = 0;                                      
@@ -155,8 +161,10 @@ for i = 1:length(time)
     if time(i) >= T/2-transmit_time && time(i)<= T/2+transmit_time
         P_transmit(i) = 40.6;
         P_idle(i) = 0;
+        P_transmitter(i) = 22.4;
     else
         P_transmit(i) = 0;
+        P_transmitter(i) = 0;
     end
     
     % if its after half the period and transmit time and not in eclipse
@@ -175,10 +183,10 @@ for i = 1:length(time)
  
 end
 
-P_sc = P_transmit+P_idle;
+P_used_by_sc = P_transmit+P_idle;
 
 
-total_high = total_energy_science+total_energy_tracking*10;
+total_high = total_energy_tracking*11;
 total_low = total_energy_science+energy_total_45*10;
 % figure
 % hold on
@@ -201,9 +209,14 @@ total_low = total_energy_science+energy_total_45*10;
 % ylabel('Power (W)')
 
 time = linspace(0,11*T,100*11);
-P_high = [P_fore_science+P_aft_science,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm];
+P_high = [P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm];
 P_low = [P_aft_science+P_fore_science,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all];
-P_consumed = [P_science,P_sc,P_sc,P_sc,P_sc,P_sc,P_sc,P_sc,P_sc,P_sc,P_sc];
+P_consumed = [P_science,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc];
+P_cpu = [P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu];
+P_adcs = [P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs];
+P_transmitter = [P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,];
+P_reciever =[P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever];
+P_sensor =[P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,P_sensor,];
 
 t = linspace(0,T,100);
 figure
@@ -214,9 +227,13 @@ ylabel('Power (W)')
 
 figure
 plot(time,P_low,'linewidth',2)
+
+
 title('Power Generation Low Cost Configuration')
 xlabel('Time (s)')
 ylabel('Power (W)')
+
+
 
 % figure
 % plot(t,P_idle,'linewidth',2)
@@ -231,7 +248,7 @@ ylabel('Power (W)')
 % ylabel('Power (W)')
 % 
 % figure
-% plot(t,P_sc,'linewidth',2)
+% plot(t,P_used_by_sc,'linewidth',2)
 % title('Spacecraft Consumed Power')
 % xlabel('Time (s)')
 % ylabel('Power (W)')
