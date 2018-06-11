@@ -13,14 +13,14 @@ P_science = 57.325;     % [W]
 P_idle = 19.325;        % [W]
 
 % idle time
-t_idle = period - t_transmit - t_science;   % [s]
+t_idle = period - t_transmit - t_science;       % [s]
 
 % energy used in each mode
-E_transmit = t_transmit * P_transmit / 60;	% [W-hrs]
-E_science = t_science * P_science / 60;     % [W-hrs]
-E_idle = t_idle * P_idle / 60;              % [W-hrs]
+E_transmit = t_transmit * P_transmit / 3600;	% [W-hrs]
+E_science = t_science * P_science / 3600;       % [W-hrs]
+E_idle = t_idle * P_idle / 3600;                % [W-hrs]
 
 % total energy
-E = E_transmit + E_science + E_idle;        % [W-hrs]
+E = E_transmit + E_science + E_idle;            % [W-hrs]
 
 end
