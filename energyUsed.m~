@@ -2,12 +2,11 @@ function [ E ] = energyUsed(t_transmit, t_science, period)
 % Function to calculate energy used by spacecraft operations over some
 % period
 %
+
 % Inputs:   t_transmit: time the sapcecraft is transmitting [s]
 %           t_science: time spacecraft is collecting science [s]
 %           period: total time of interest [s]
 % Outputs:  E: total energy used by the spacecraft [W-hr]
-
-if nargin 
 
 % Constant: found in duty cycle table
 P_transmit = 41.725;    % [W]
