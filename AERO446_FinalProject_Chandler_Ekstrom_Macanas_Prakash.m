@@ -33,8 +33,8 @@ d_high = 50; % diameter of deployable antennna, [cm]
 %% Orbital Parameters for the Moon
 alt = 200; % altitude of orbit, [km]
 T = 2*pi*sqrt((r_moon + alt)^3/mu_moon); % Period of orbit, [s]
-data = dataRate_sensor*T/1000; % data per day required to send [Mb]
-
+data = dataRate_sensor*T/1000; % data per day required to send [Mbits]
+data_rate = data/(15*60);%[bits/s]
 ang = 2*(90 - acosd(r_moon/(r_moon + alt))); % angle for arc in eclipse, [deg]
 tEclipse = T*ang/360; % time spent in eclipse, [s]
 tSight = T - tEclipse; % time spent in [Earth line-of-sight / Sunlight], [s]
@@ -60,10 +60,7 @@ numOrbits = floor(24*60*60/T); % number of orbits around moon in a day
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 R = myComms('Low'); % [bit/s]
-time_low = transmit_time(R,data*10^6,numOrbits-1);
-
-
-
+time_low = transmit_time(data_rate,data,numOrbits-1);
 
 %% High Cost
 
@@ -85,10 +82,9 @@ time_low = transmit_time(R,data*10^6,numOrbits-1);
 % Comms>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 R = myComms('High'); % [bit/s]
-time_high = transmit_time(R,data*10^6,numOrbits-1);
+time_high = transmit_time(data_rate,data,numOrbits-1);
 
-
-
+[total_low,total_high] = myPower(time_low);
 
 
 

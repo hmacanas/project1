@@ -1,14 +1,14 @@
-function [total_energy_science,total_energy_tracking,energy_total_45] = myPower(transmit_time)
+function [total_low,total_high] = myPower(transmit_time)
 % Input:
     % time of data transmission (s)
     
 % Output:
-    % total energy produced during science, low cost, and high cost configuration
-    % power plots of science, low cost, and high cost configuration (whr)
+    % total energy produced during low cost, and high cost configuration
+    % over 11 orbits
     
 % Note:
-    % if the time of data transmission is zero energy and plots for a full
-    % orbit are produced
+    % if the time of data transmission is zero energy then you produce
+    % energy the entire time 
     
 %% Constants
 
@@ -40,7 +40,7 @@ Area = .3*.2;
 % efficiency>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 % solar cell efficiency
-e_cell = .29;
+e_cell = .30;
 
 % cell degradation/year
 e_deg = .025;
@@ -52,10 +52,10 @@ e_temp = .005;
 E_temp = e_cell*(1-e_temp*(Temp-Temp_ref)); 
 
 % time efficiency
-E_time = (1-e_deg)^7;
+E_time = (1-e_deg)^3;
 
 % packing desnity for now
-E_packing_desnity = .8;    
+E_packing_desnity = 1;    
 
 % combined efficiency
 E_total = E_temp*E_time*E_packing_desnity; 
@@ -106,7 +106,7 @@ energy_total_45 = (double(int(P_45_all,t,[tEclipse/2, T/2-transmit_time])))/3600
 % power calcs
 syms t
 theta = pi/2;                                                                
-P_norm = 3*Se*Area*E_total*sin(theta);                                      
+P_norm = 2*Se*Area*E_total*sin(theta);                                      
 
 % energy calcs
 total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;   
@@ -114,7 +114,7 @@ total_energy_tracking = (double(int(P_norm,t,[0, T-tEclipse])))/3600;
 %% Power Plots 
 
 % time is one orbit
-time = linspace(0,T,1000);
+time = linspace(0,T,100);
 
 % how long we will be transmitting data (s)
 %transmit_time = 1/10*T;
@@ -152,24 +152,41 @@ for i = 1:length(time)
  
 end
 
-figure
-hold on
-plot(time,P_fore_science,'linewidth',2)
-plot(time,P_aft_science,'linewidth',2)
-title('Power Generation During Science vs Time')
-xlabel('Time (s)')
-ylabel('Power (W)')
+total_high = total_energy_science+total_energy_tracking*10;
+total_low = total_energy_science+energy_total_45*10;
+% figure
+% hold on
+% plot(time,P_fore_science+P_aft_science,'linewidth',2)
+% title('Power Generation During Science vs Time')
+% xlabel('Time (s)')
+% ylabel('Power (W)')
+% 
+% 
+% figure
+% plot(time,P_45_all,'linewidth',2)
+% title('Power Generation Low Cost Configuration"')
+% xlabel('Time (s)')
+% ylabel('Power (W)')
+% 
+% figure
+% plot(time,P_norm,'linewidth',2)
+% title('Power Generation High Cost Configuration')
+% xlabel('Time (s)')
+% ylabel('Power (W)')
 
+time = linspace(0,11*T,100*11);
+P_high = [P_fore_science+P_aft_science,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm];
+P_low = [P_aft_science+P_fore_science,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all];
 
 figure
-plot(time,P_45_all,'linewidth',2)
-title('Power Generation Low Cost Configuration"')
-xlabel('Time (s)')
-ylabel('Power (W)')
-
-figure
-plot(time,P_norm,'linewidth',2)
+plot(time,P_high,'linewidth',2)
 title('Power Generation High Cost Configuration')
+xlabel('Time (s)')
+ylabel('Power (W)')
+
+figure
+plot(time,P_low,'linewidth',2)
+title('Power Generation Low Cost Configuration')
 xlabel('Time (s)')
 ylabel('Power (W)')
 

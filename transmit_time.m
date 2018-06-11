@@ -6,7 +6,7 @@ function [time] = transmit_time(R,data,numOrbits)
     % Output:
         % time needed to trasnmit per orbit
  
-    % amount of data per orbit needed to send (s)
+    % amount of data per orbit needed to send (bits)
     data_per_orbit = data/numOrbits;
     
     % calculate amount of time (s)
