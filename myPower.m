@@ -207,17 +207,16 @@ total_low = total_energy_science+energy_total_45*10;
 % title('Power Generation High Cost Configuration')
 % xlabel('Time (s)')
 % ylabel('Power (W)')
-
+t = linspace(0,T,100);
+null = zeros(1,length(t))*nan;
 time = linspace(0,11*T,100*11);
 P_high = [P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm,P_norm];
 P_low = [P_aft_science+P_fore_science,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all,P_45_all];
 P_consumed = [P_science,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc,P_used_by_sc];
 P_cpu = [P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu,P_cpu];
 P_adcs = [P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs,P_adcs];
-P_transmitter = [P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,];
+P_transmitter = [null,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,P_transmitter,];
 P_reciever =[P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever,P_reciever];
-t = linspace(0,T,100);
-null = zeros(1,length(t))*nan;
 P_sensor =[P_sensor,null,null,null,null,null,null,null,null,null,null];
 
 
@@ -269,17 +268,17 @@ legend({'Panels','cpu','adcs','trasnmitter','reciever','sensor'},'Location','nor
 % xlabel('Time (s)')
 % ylabel('Power (W)')
 % 
-figure
-plot(time,P_low-P_consumed,'linewidth',2)
-title('Power Generated Minus Power Consumed by Spacecraft: Low Cost Configuration')
-xlabel('Time (s)')
-ylabel('Power (W)')
-
-figure
-plot(time,P_high-P_consumed,'linewidth',2)
-title('Power Generated Minus Power Consumed by Spacecraft: High Cost Configuration')
-xlabel('Time (s)')
-ylabel('Power (W)')
+% figure
+% plot(time,P_low-P_consumed,'linewidth',2)
+% title('Power Generated Minus Power Consumed by Spacecraft: Low Cost Configuration')
+% xlabel('Time (s)')
+% ylabel('Power (W)')
+% 
+% figure
+% plot(time,P_high-P_consumed,'linewidth',2)
+% title('Power Generated Minus Power Consumed by Spacecraft: High Cost Configuration')
+% xlabel('Time (s)')
+% ylabel('Power (W)')
 
 
 end
