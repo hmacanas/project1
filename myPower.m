@@ -40,7 +40,7 @@ Area = .3*.2;
 % efficiency>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 % solar cell efficiency
-e_cell = .30;
+e_cell = .3;
 
 % cell degradation/year
 e_deg = .025;
@@ -55,7 +55,7 @@ E_temp = e_cell*(1-e_temp*(Temp-Temp_ref));
 E_time = (1-e_deg)^3;
 
 % packing desnity for now
-E_packing_desnity = 1;    
+E_packing_desnity = .91;    
 
 % combined efficiency
 E_total = E_temp*E_time*E_packing_desnity; 
